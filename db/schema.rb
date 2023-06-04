@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_04_030725) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_04_052708) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -43,6 +43,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_04_030725) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "img"
+    t.integer "likes_count"
   end
 
   create_table "user_posts", force: :cascade do |t|

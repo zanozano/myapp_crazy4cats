@@ -2,11 +2,15 @@ class CommentsController < ApplicationController
   def create
     @post = Post.find(params[:post_id])
     @comment = @post.comments.build(comment_params)
-    @comment.user = "Anónimo" if @comment.user.blank?
+
+    if user_signed_in? && @comment.user.blank?
+      @comment.user = current_user.email
+    end
+
     if @comment.save
       redirect_to @post, notice: "Comentario creado exitosamente."
     else
-      # Handle error case
+      # Manejar el caso de error en el guardado del comentario
     end
   end
 

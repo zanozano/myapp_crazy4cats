@@ -29,19 +29,15 @@
         </div>
       <% end %>
 
-    <div class="d-flex align-items-center gap-2">
-      <%= form_with(model: Like.new, url: likes_path, method: :post, local: true, id: 'like-form') do |form| %>
-        <%= form.button type: 'submit', class: 'btn btn-primary', id: 'like-button' do %>
-          <%= fa_icon('thumbs-up') %>
-          Like
+     <div class="d-flex align-items-center gap-2">
+        <%= form_with(model: [@post, @post.likes.build], url: post_likes_path(@post), method: :post, local: true, id: 'like-form') do |form| %>
+          <%= form.hidden_field :user_id, value: 0, id: 'like-user-id' %>
+          <%= form.button 'Like', class: 'btn btn-primary', type: 'submit', id: 'like-button' %>
         <% end %>
-      <% end %>
-
-      <div id="likes-container">
-        <%= pluralize(Like.count, 'like') %>
+        <div id="likes-container">
+          <%= pluralize(@post.likes_count, 'like') %>
+        </div>
       </div>
-    </div>
-
 
       <hr class="my-2">
 
@@ -60,10 +56,18 @@
           </div>
         <% end %>
       </div>
-
     </div>
   </div>
 </div>
 
 
-
+<script>
+  $(document).ready(function() {
+    $('#like-button').click(function() {
+      var likeUserId = parseInt($('#like-user-id').val());
+      likeUserId += 1;
+      $('#like-user-id').val(likeUserId);
+      $('#likes-container').text(likeUserId + ' like');
+    });
+  });
+</script>

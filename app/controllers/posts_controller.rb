@@ -3,13 +3,14 @@ class PostsController < ApplicationController
 
   # GET /posts or /posts.json
   def index
-    @posts = Post.includes(:comments, :likes).all
+    @posts = Post.includes(:comments, :likes).order(created_at: :desc)
   end
 
   # GET /posts/1 or /posts/1.json
   def show
     @post = Post.find(params[:id])
     @comments = @post.comments
+    @like_count = @post.likes_count
   end
 
   # GET /posts/new
@@ -22,19 +23,28 @@ class PostsController < ApplicationController
   end
 
   # POST /posts or /posts.json
-  def create
-    @post = Post.new(post_params)
+def create
+  @post = Post.new(post_params)
 
-    respond_to do |format|
-      if @post.save
-        format.html { redirect_to post_url(@post), notice: "Post was successfully created." }
-        format.json { render :show, status: :created, location: @post }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @post.errors, status: :unprocessable_entity }
-      end
+  # Generar una URL de imagen aleatoria de gatos utilizando la API TheCatAPI
+  response = HTTParty.get('https://api.thecatapi.com/v1/images/search?mime_types=jpg,png')
+  data = JSON.parse(response.body)
+  image_url = data.first['url']
+
+  # Asignar la URL de imagen al nuevo post
+  @post.img = image_url
+
+  respond_to do |format|
+    if @post.save
+      format.html { redirect_to post_url(@post), notice: "Post was successfully created." }
+      format.json { render :show, status: :created, location: @post }
+    else
+      format.html { render :new, status: :unprocessable_entity }
+      format.json { render json: @post.errors, status: :unprocessable_entity }
     end
   end
+end
+
 
   # PATCH/PUT /posts/1 or /posts/1.json
   def update

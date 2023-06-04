@@ -5,22 +5,23 @@ class LikesController < ApplicationController
     render json: { count: like_count }
   end
 
- 
-def create
-  post = Post.find(params[:post_id])
-
-  # Lógica para crear un nuevo "like" utilizando los parámetros user_id y post_id
-  like = Like.new(user_id: params[:user_id], post_id: params[:post_id])
-
-  if like.save
-    like_count = post.likes.count
-
-    render json: { count: like_count }
-  else
-    render json: { error: "Failed to like" }, status: :unprocessable_entity
+  def show
+    @post = Post.find(params[:id])
+    @like = Like.new
   end
-end
 
+  def create
+    @post = Post.find(params[:post_id])
 
+    # Crear un nuevo "like" asociado al post
+    @like = @post.likes.build(like_params)
+
+    if @like.save
+      @post.increment!(:likes_count) # Incrementar el contador de likes del post
+      redirect_to @post, notice: "Like creado exitosamente."
+    else
+      redirect_to @post, alert: "Error al crear el like."
+    end
+  end
 
 end
