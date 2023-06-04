@@ -1,3 +1,12 @@
+<div class="card p-4 mb-3">
+<% if action_name == 'index' %>
+  <h2>Post</h2>
+<% elsif action_name == 'edit' %>
+  <h2>Editar Post</h2>
+<% elsif action_name == 'new' %>
+  <h2>Nuevo Post</h2>
+<% end %>
+
 <%= form_with(model: post) do |form| %>
   <% if post.errors.any? %>
     <div style="color: red">
@@ -11,17 +20,19 @@
     </div>
   <% end %>
 
-  <div>
+  <div class="form-group mb-2">
     <%= form.label :title, style: "display: block" %>
-    <%= form.text_field :title %>
+    <%= form.text_field :title, class: 'form-control' %>
   </div>
 
-  <div>
+  <div class="form-group mb-2">
     <%= form.label :content, style: "display: block" %>
-    <%= form.text_area :content %>
+    <%= form.text_area :content, class: 'form-control' %>
   </div>
 
   <div>
-    <%= form.submit %>
+    <%= form.submit 'Actualizar', class: 'btn btn-success' %>
   </div>
 <% end %>
+<hr>
+<div>
