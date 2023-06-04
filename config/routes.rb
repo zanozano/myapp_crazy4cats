@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
-  resources :posts
+  resources :likes, only: [:create, :destroy]
   resources :posts do
-  resources :comments, only: [:create]
+    resources :likes, only: [:index], module: :posts
+    resources :comments, only: [:create, :destroy]
   end
   devise_for :users
   root "posts#index"

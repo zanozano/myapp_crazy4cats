@@ -78,3 +78,4 @@ gem "bootstrap"
 gem "jquery-rails"
 gem 'json'
 gem 'httparty'
+gem 'font-awesome-rails'

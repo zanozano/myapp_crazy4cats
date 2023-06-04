@@ -8,7 +8,17 @@
         <div class="row">
           <div class="col-md-6">
             <h4 class="mb-3"><%= post.title %></h4>
-            <p>
+               
+               <div id="likes-container" class="mb-4">
+                <%= fa_icon('thumbs-up') %>
+                <% if post.likes.any? %>
+                    <%= pluralize(post.likes.count, 'like') %>
+                  <% else %>
+                    No hay likes
+                <% end %>
+                </div>
+
+              <p>
               <%= post.content %>
             </p>
           </div>
@@ -18,10 +28,10 @@
               <img src="<%= url_for(post.img) %>" alt="Post Image" class="img-fluid rounded-1">
             </div>
           <% end %>
+    
+        </div>     
 
-        </div>
-
-        <hr class="my-4">
+        <hr class="my-2">
 
         <h5>Comentarios</h5>
         <% post.comments.each do |comment| %>
